@@ -22,14 +22,26 @@ Use these project-specific slash commands:
 
 ## Project Context
 
-This project uses **Drizzle ORM** for type-safe database operations with:
+This project uses **Drizzle ORM v0.44.6+** for type-safe database operations with:
 
 - **TypeScript-first** approach with full type inference
 - **SQL-like syntax** that's familiar and powerful
-- **Multiple database support** - PostgreSQL, MySQL, SQLite
-- **Automatic migrations** with schema versioning
+- **Multiple database support** - PostgreSQL 17+, MySQL 8+, SQLite
+- **Identity columns** preferred over serial types (PostgreSQL)
+- **Enhanced migrations** with DDL improvements
+- **Gel dialect support** for PostgreSQL-compatible databases
 - **Performance optimized** with prepared statements
 - **Edge runtime compatible** - Works with serverless
+
+## 🚀 2025 Drizzle ORM Updates
+
+### Major Changes
+- **Identity columns over serial** for PostgreSQL (recommended pattern)
+- **Enhanced DDL generation** with stricter validation
+- **New Gel dialect** for PostgreSQL-compatible databases
+- **Improved kit behavior** - no more IF NOT EXISTS in DDL
+- **Better version compatibility** between ORM and Kit
+- **PostgreSQL 17+ support** with latest features
 
 ## Core Drizzle Principles
 
@@ -99,14 +111,15 @@ export const db = drizzle(connection);
 
 ## Schema Patterns
 
-### User Management Schema
+### User Management Schema (2025 Pattern)
 
 ```typescript
-// schema/users.ts
-import { pgTable, serial, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+// schema/users.ts - Using identity columns (recommended)
+import { pgTable, integer, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 
 export const users = pgTable('users', {
-  id: serial('id').primaryKey(),
+  // ✅ RECOMMENDED: Use identity() instead of serial()
+  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   email: text('email').notNull().unique(),
   name: text('name').notNull(),
   avatar: text('avatar'),
@@ -117,23 +130,34 @@ export const users = pgTable('users', {
 
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
+
+// Legacy pattern (deprecated but still supported)
+// import { pgTable, serial } from 'drizzle-orm/pg-core';
+// export const usersLegacy = pgTable('users_legacy', {
+//   id: serial('id').primaryKey(), // ⚠️ Use identity() instead
+// });
 ```
 
-### Content with Relations
+### Content with Relations (2025 Pattern)
 
 ```typescript
-// schema/posts.ts
-import { pgTable, serial, text, timestamp, integer } from 'drizzle-orm/pg-core';
+// schema/posts.ts - Using identity columns and enhanced relations
+import { pgTable, integer, text, timestamp, boolean } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { users } from './users';
 
 export const posts = pgTable('posts', {
-  id: serial('id').primaryKey(),
+  // ✅ Use identity column for primary key
+  id: integer('id').primaryKey().generatedByDefaultAsIdentity(),
   title: text('title').notNull(),
   content: text('content').notNull(),
   slug: text('slug').notNull().unique(),
   published: boolean('published').default(false),
-  authorId: integer('author_id').references(() => users.id),
+  // Foreign key with proper cascading
+  authorId: integer('author_id').references(() => users.id, {
+    onDelete: 'cascade',
+    onUpdate: 'cascade',
+  }),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
@@ -352,41 +376,69 @@ export async function getTopSellingProducts(limit = 10) {
 
 ## Migration Management
 
-### Drizzle Config
+### Drizzle Config (2025 Version)
 
 ```typescript
-// drizzle.config.ts
+// drizzle.config.ts - Compatible with Kit v0.31.5+
 import type { Config } from 'drizzle-kit';
 
 export default {
   schema: './src/schema/*',
   out: './drizzle',
-  driver: 'pg',
+  dialect: 'postgresql', // Updated from 'driver: pg'
   dbCredentials: {
-    connectionString: process.env.DATABASE_URL!,
+    url: process.env.DATABASE_URL!, // Updated from connectionString
+  },
+  verbose: true,
+  strict: true,
+  // New options in 2025
+  migrations: {
+    table: '_drizzle_migrations',
+    schema: 'public',
+  },
+  // Enhanced introspection options
+  introspect: {
+    casing: 'camelCase',
+  },
+} satisfies Config;
+
+// Alternative: For Gel dialect (PostgreSQL-compatible)
+export const gelConfig = {
+  schema: './src/schema/*',
+  out: './drizzle',
+  dialect: 'gel', // New Gel dialect
+  dbCredentials: {
+    url: process.env.GEL_DATABASE_URL!,
   },
   verbose: true,
   strict: true,
 } satisfies Config;
 ```
 
-### Common Commands
+### Common Commands (2025 Updated)
 
 ```bash
-# Generate migration
-npx drizzle-kit generate:pg
+# Generate migration (new syntax)
+npx drizzle-kit generate
 
-# Run migrations
-npx drizzle-kit push:pg
+# Push schema changes to database
+npx drizzle-kit push
 
 # Introspect existing database
-npx drizzle-kit introspect:pg
+npx drizzle-kit introspect
 
-# View migration status
-npx drizzle-kit up:pg
+# Check migration status
+npx drizzle-kit check
 
-# Studio (database browser)
+# Studio (database browser) - Enhanced UI
 npx drizzle-kit studio
+
+# New in 2025: Migration checking and validation
+npx drizzle-kit validate
+
+# Legacy syntax still supported but deprecated
+# npx drizzle-kit generate:pg  # ⚠️ Deprecated
+# npx drizzle-kit push:pg      # ⚠️ Deprecated
 ```
 
 ### Migration Scripts

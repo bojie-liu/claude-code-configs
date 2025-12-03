@@ -1,6 +1,6 @@
-# Tailwind CSS Development Assistant
+# Tailwind CSS v4.0 Development Assistant
 
-You are an expert in Tailwind CSS with deep knowledge of utility-first styling, responsive design, component patterns, and modern CSS architecture.
+You are an expert in Tailwind CSS v4.0 with deep knowledge of utility-first styling, responsive design, component patterns, the new CSS-first configuration system, and modern CSS architecture.
 
 ## Memory Integration
 
@@ -23,15 +23,26 @@ Project-specific slash commands for Tailwind development:
 
 ## Project Context
 
-This project uses **Tailwind CSS** for styling with:
+This project uses **Tailwind CSS v4.0** for styling with:
 
+- **Zero configuration** - no tailwind.config.js needed by default
+- **CSS-first configuration** with `@theme` and `@plugin` directives
+- **High-performance engine** - 5x faster builds, 100x faster incremental builds
 - **Utility-first approach** for rapid development
 - **Responsive design** with mobile-first methodology
-- **Custom design system** with consistent spacing and colors
+- **CSS variables and OKLCH** for enhanced design system control
 - **Component patterns** for reusable UI elements
-- **Performance optimization** with CSS purging
-- **Dark mode support** with class-based theming
-- **Plugin ecosystem** for extended functionality
+- **Dark mode support** with advanced theming
+- **Modern plugin ecosystem** with v4-compatible plugins
+
+## 🚀 Major Tailwind v4.0 Changes
+
+### CSS-First Configuration (Recommended)
+- **No tailwind.config.js by default** - configure directly in CSS
+- **@theme directive** for custom design tokens
+- **@plugin directive** for importing plugins
+- **@config directive** for optional JavaScript config files
+- **Automatic installation** with one line of CSS
 
 ## Core Tailwind Principles
 
@@ -61,99 +72,124 @@ This project uses **Tailwind CSS** for styling with:
 
 ## Configuration Patterns
 
-### Basic Tailwind Config
+### Tailwind v4 Installation & Setup
+
+```css
+/* styles.css - Zero configuration approach */
+@import "tailwindcss";
+```
+
+```css
+/* styles.css - With custom theme */
+@import "tailwindcss";
+
+@theme {
+  --color-brand-50: oklch(97% 0.01 250);
+  --color-brand-100: oklch(93% 0.05 250);
+  --color-brand-500: oklch(50% 0.15 250);
+  --color-brand-900: oklch(20% 0.1 250);
+
+  --font-family-display: "Inter", system-ui, sans-serif;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+}
+```
+
+### Legacy JavaScript Config (Optional)
 
 ```javascript
-// tailwind.config.js
+/* tailwind.config.js - Only if needed for complex configuration */
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
   theme: {
     extend: {
-      // Custom configuration here
+      colors: {
+        brand: {
+          50: 'oklch(97% 0.01 250)',
+          500: 'oklch(50% 0.15 250)',
+          900: 'oklch(20% 0.1 250)',
+        }
+      }
     },
   },
   plugins: [],
 }
 ```
 
-### Design System Configuration
+```css
+/* Reference JavaScript config in CSS */
+@import "tailwindcss";
+@config "tailwind.config.js";
+```
 
-```javascript
-// tailwind.config.js
-module.exports = {
-  content: ['./src/**/*.{js,ts,jsx,tsx}'],
-  darkMode: 'class',
-  theme: {
-    extend: {
-      colors: {
-        brand: {
-          50: '#f0f9ff',
-          100: '#e0f2fe',
-          200: '#bae6fd',
-          300: '#7dd3fc',
-          400: '#38bdf8',
-          500: '#0ea5e9',
-          600: '#0284c7',
-          700: '#0369a1',
-          800: '#075985',
-          900: '#0c4a6e',
-          950: '#082f49',
-        },
-        gray: {
-          50: '#f9fafb',
-          100: '#f3f4f6',
-          200: '#e5e7eb',
-          300: '#d1d5db',
-          400: '#9ca3af',
-          500: '#6b7280',
-          600: '#4b5563',
-          700: '#374151',
-          800: '#1f2937',
-          900: '#111827',
-          950: '#030712',
-        }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Consolas', 'monospace'],
-      },
-      spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-      },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-in-out',
-        'slide-up': 'slideUp 0.3s ease-out',
-        'bounce-gentle': 'bounceGentle 2s infinite',
-      },
-      keyframes: {
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        slideUp: {
-          '0%': { transform: 'translateY(10px)', opacity: '0' },
-          '100%': { transform: 'translateY(0)', opacity: '1' },
-        },
-        bounceGentle: {
-          '0%, 100%': { transform: 'translateY(-5%)' },
-          '50%': { transform: 'translateY(0)' },
-        },
-      },
-    },
-  },
-  plugins: [
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/container-queries'),
-  ],
+### Tailwind v4 CSS-First Design System
+
+```css
+/* styles.css - Modern v4 approach */
+@import "tailwindcss";
+
+@theme {
+  /* OKLCH Color System (better than HSL) */
+  --color-brand-50: oklch(97% 0.01 250);
+  --color-brand-100: oklch(93% 0.05 250);
+  --color-brand-200: oklch(87% 0.08 250);
+  --color-brand-300: oklch(78% 0.12 250);
+  --color-brand-400: oklch(68% 0.15 250);
+  --color-brand-500: oklch(50% 0.18 250);
+  --color-brand-600: oklch(42% 0.15 250);
+  --color-brand-700: oklch(35% 0.12 250);
+  --color-brand-800: oklch(28% 0.08 250);
+  --color-brand-900: oklch(20% 0.05 250);
+  --color-brand-950: oklch(13% 0.02 250);
+
+  /* Enhanced Gray Scale */
+  --color-gray-50: oklch(99% 0 0);
+  --color-gray-100: oklch(97% 0 0);
+  --color-gray-200: oklch(93% 0 0);
+  --color-gray-300: oklch(85% 0 0);
+  --color-gray-400: oklch(70% 0 0);
+  --color-gray-500: oklch(55% 0 0);
+  --color-gray-600: oklch(45% 0 0);
+  --color-gray-700: oklch(35% 0 0);
+  --color-gray-800: oklch(25% 0 0);
+  --color-gray-900: oklch(15% 0 0);
+  --color-gray-950: oklch(8% 0 0);
+
+  /* Typography System */
+  --font-family-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-family-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --font-family-display: "Cal Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Enhanced Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-88: 22rem;
+
+  /* Animation System */
+  --animate-fade-in: fade-in 0.5s ease-in-out;
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-bounce-gentle: bounce-gentle 2s infinite;
+
+  /* Animation Keyframes */
+  --keyframes-fade-in: {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  };
+
+  --keyframes-slide-up: {
+    from { transform: translateY(10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  };
+
+  --keyframes-bounce-gentle: {
+    0%, 100% { transform: translateY(-5%); }
+    50% { transform: translateY(0); }
+  };
 }
+
+/* Import v4-compatible plugins */
+@plugin "tailwindcss/typography";
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/container-queries";
 ```
 
 ### Advanced Configuration with CSS Variables
@@ -514,27 +550,34 @@ function ThemeToggle() {
 
 ## Performance Optimization
 
-### Content Configuration
+### Tailwind v4 Performance Features
 
-```javascript
-// Optimized content paths for better purging
-module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/**/*.{js,ts,jsx,tsx,mdx}',
-    // Include node_modules if using component libraries
-    './node_modules/@my-ui-lib/**/*.{js,ts,jsx,tsx}',
-  ],
-  safelist: [
-    // Keep dynamic classes that might be missed by purging
-    {
-      pattern: /bg-(red|green|blue)-(100|500|900)/,
-      variants: ['hover', 'focus'],
-    },
-  ],
-}
+**Built-in Optimizations:**
+- **High-performance engine**: Up to 5x faster full builds
+- **Incremental builds**: Over 100x faster incremental rebuilds
+- **Automatic optimization**: No manual purging configuration needed
+- **Smart content detection**: Automatically finds and processes template files
+
+**CLI Installation:**
+```bash
+# Install the new CLI package
+npm install -g @tailwindcss/cli@next
+
+# Initialize project (creates minimal setup)
+tailwindcss init
+
+# Build with watch mode
+tailwindcss --input src/styles.css --output dist/styles.css --watch
+```
+
+**Content Detection (Auto-configured):**
+```css
+/* styles.css - Content detection is automatic */
+@import "tailwindcss";
+
+/* Manual content specification (optional) */
+@source "src/**/*.{js,ts,jsx,tsx}";
+@source "components/**/*.{js,ts,jsx,tsx}";
 ```
 
 ### Custom Utilities

@@ -34,14 +34,27 @@ Project-specific slash commands for AI SDK development:
 
 ## Project Context
 
-This project uses the **Vercel AI SDK** for building AI applications with:
+This project uses the **Vercel AI SDK v5+** for building AI applications with:
 
-- **Multiple providers** - Anthropic, OpenAI, Google, etc.
-- **Streaming responses** - Real-time AI interactions
+- **Multiple providers** - Anthropic, OpenAI, Google, Grok 4.1 Fast, etc.
+- **Enhanced streaming** - Real-time AI interactions with improved performance
 - **Function calling** - Tool use and structured outputs
-- **React integration** - useChat, useCompletion hooks
+- **React integration** - useChat, useCompletion hooks with React 19 support
 - **Edge runtime support** - Optimized for serverless
 - **TypeScript-first** - Full type safety
+- **Agent workflows** - Multi-step AI agent orchestration
+- **Workflow system** - Durable TypeScript workflows (use workflow)
+
+## 🚀 2025 AI SDK v5 Updates
+
+### Major New Features
+- **AI SDK 6 Beta** - Agent abstraction layer for TypeScript projects
+- **Enhanced useChat** - Improved finish reason and data format compatibility
+- **Workflow System** - Open-source durable workflows for TypeScript
+- **Grok 4.1 Fast** - Support for xAI's latest fast model via AI Gateway
+- **Gemini 3 Pro** - Access to Google's latest model through AI Gateway
+- **Automated Migration** - Codemods for upgrading from v4 to v5
+- **Breaking Changes Fixed** - Resolved compatibility issues between versions
 
 ## Expert Capabilities
 
@@ -85,26 +98,30 @@ This project uses the **Vercel AI SDK** for building AI applications with:
 
 ## Common Patterns
 
-### Basic Streaming Setup
+### Basic Streaming Setup (AI SDK v5)
 
 ```typescript
 // app/api/chat/route.ts
 import { openai } from '@ai-sdk/openai';
+import { anthropic } from '@ai-sdk/anthropic';
 import { streamText } from 'ai';
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
 
   const result = await streamText({
-    model: openai('gpt-4'),
+    model: anthropic('claude-3-5-sonnet-20241022'), // Latest Claude model
     messages,
+    // Enhanced streaming options in v5
+    temperature: 0.7,
+    maxTokens: 4096,
   });
 
   return result.toDataStreamResponse();
 }
 ```
 
-### React Chat Interface
+### React Chat Interface (AI SDK v5 Enhanced)
 
 ```typescript
 // components/chat.tsx
@@ -112,19 +129,76 @@ export async function POST(req: Request) {
 import { useChat } from 'ai/react';
 
 export default function Chat() {
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    error,
+    reload,
+    stop
+  } = useChat({
+    // Enhanced finish reason handling in v5
+    onFinish: (message, { finishReason }) => {
+      console.log('Message finished:', finishReason);
+      // Handle different finish reasons: 'stop', 'length', 'tool-calls', etc.
+    },
+    // Improved error handling
+    onError: (error) => {
+      console.error('Chat error:', error);
+    },
+  });
 
   return (
-    <div>
-      {messages.map(m => (
-        <div key={m.id}>
-          {m.role}: {m.content}
-        </div>
-      ))}
-      
-      <form onSubmit={handleSubmit}>
-        <input value={input} onChange={handleInputChange} />
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto">
+        {messages.map(m => (
+          <div key={m.id} className="mb-4">
+            <div className="font-semibold">{m.role}:</div>
+            <div>{m.content}</div>
+          </div>
+        ))}
+        {isLoading && <div>AI is thinking...</div>}
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex gap-2">
+        <input
+          value={input}
+          onChange={handleInputChange}
+          placeholder="Type your message..."
+          disabled={isLoading}
+          className="flex-1 p-2 border rounded"
+        />
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Send
+        </button>
+        {isLoading && (
+          <button
+            type="button"
+            onClick={stop}
+            className="px-4 py-2 bg-red-500 text-white rounded"
+          >
+            Stop
+          </button>
+        )}
       </form>
+
+      {error && (
+        <div className="p-4 bg-red-100 border border-red-400 rounded mt-2">
+          <p>Error: {error.message}</p>
+          <button
+            onClick={reload}
+            className="mt-2 px-3 py-1 bg-red-500 text-white rounded text-sm"
+          >
+            Retry
+          </button>
+        </div>
+      )}
     </div>
   );
 }
@@ -150,39 +224,122 @@ const result = await generateObject({
 });
 ```
 
-### Multi-Provider Setup
+### Multi-Provider Setup (2025 Updated)
 
 ```typescript
 // lib/ai-providers.ts
 import { anthropic } from '@ai-sdk/anthropic';
 import { openai } from '@ai-sdk/openai';
 import { google } from '@ai-sdk/google';
+import { xai } from '@ai-sdk/xai';
 
 export const providers = {
   anthropic: {
     fast: anthropic('claude-3-haiku-20240307'),
-    balanced: anthropic('claude-3-sonnet-20240229'),
-    powerful: anthropic('claude-3-opus-20240229'),
+    balanced: anthropic('claude-3-5-sonnet-20241022'), // Latest Sonnet
+    powerful: anthropic('claude-3-5-sonnet-20241022'), // Updated to latest
   },
   openai: {
-    fast: openai('gpt-3.5-turbo'),
-    balanced: openai('gpt-4'),
-    powerful: openai('gpt-4-turbo'),
+    fast: openai('gpt-4o-mini'),
+    balanced: openai('gpt-4o'),
+    powerful: openai('o1-preview'), // Latest reasoning model
   },
   google: {
-    fast: google('gemini-pro'),
-    powerful: google('gemini-pro'),
+    fast: google('gemini-1.5-flash'),
+    balanced: google('gemini-1.5-pro'),
+    powerful: google('gemini-3-pro'), // New model via AI Gateway
+  },
+  xai: {
+    fast: xai('grok-4.1-fast'), // New Grok model via AI Gateway
+    balanced: xai('grok-beta'),
   },
 };
+
+// Enhanced provider selection with fallbacks
+export async function getOptimalProvider(task: 'fast' | 'balanced' | 'powerful') {
+  const fallbackChain = {
+    fast: [providers.anthropic.fast, providers.openai.fast, providers.xai.fast],
+    balanced: [providers.anthropic.balanced, providers.openai.balanced, providers.google.balanced],
+    powerful: [providers.anthropic.powerful, providers.openai.powerful, providers.google.powerful],
+  };
+
+  return fallbackChain[task];
+}
+```
+
+### Workflow System (New in 2025)
+
+```typescript
+// lib/workflows/data-processing.ts
+import { workflow, step } from '@vercel/workflow';
+import { z } from 'zod';
+
+const processDataSchema = z.object({
+  data: z.array(z.string()),
+  processingType: z.enum(['summarize', 'categorize', 'extract']),
+});
+
+export const dataProcessingWorkflow = workflow('data-processing', {
+  schema: processDataSchema,
+  steps: {
+    validateData: step('validate-data', async ({ data }) => {
+      // Validation logic
+      return { validData: data.filter(item => item.length > 0) };
+    }),
+
+    processWithAI: step('process-ai', async ({ validData, processingType }) => {
+      const result = await generateObject({
+        model: providers.anthropic.balanced,
+        schema: z.object({
+          results: z.array(z.string()),
+          metadata: z.object({
+            processingTime: z.number(),
+            accuracy: z.number(),
+          }),
+        }),
+        prompt: `Process this data using ${processingType}: ${validData.join(', ')}`,
+      });
+
+      return result.object;
+    }),
+
+    saveResults: step('save-results', async ({ results, metadata }) => {
+      // Save to database or external system
+      console.log('Saving results:', results, metadata);
+      return { saved: true, id: crypto.randomUUID() };
+    }),
+  },
+});
+
+// Usage in API route
+export async function POST(req: Request) {
+  const input = await req.json();
+
+  const workflowResult = await dataProcessingWorkflow.run(input);
+
+  return Response.json(workflowResult);
+}
 ```
 
 ## Common Commands
 
-### Development
+### Development (2025 Updated)
 
 ```bash
-npm install ai @ai-sdk/openai @ai-sdk/anthropic  # Install core packages
-npm run dev                                      # Start development server
+# Install AI SDK v5 and providers
+npm install ai@latest @ai-sdk/openai @ai-sdk/anthropic @ai-sdk/google @ai-sdk/xai
+
+# Install workflow system (new)
+npm install @vercel/workflow
+
+# Install migration tools for v4 → v5
+npm install @ai-sdk/codemod
+
+# Run automated migration from v4 to v5
+npx @ai-sdk/codemod migrate
+
+# Start development server
+npm run dev
 ```
 
 ### Testing

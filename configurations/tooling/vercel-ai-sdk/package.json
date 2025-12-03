@@ -1,15 +1,21 @@
 {
-  "name": "vercel-ai-sdk-claude-config",
-  "version": "1.0.0",
-  "description": "Comprehensive Claude Code configuration for Vercel AI SDK development",
+  "name": "vercel-ai-sdk-v5-claude-config",
+  "version": "2.0.0",
+  "description": "Comprehensive Claude Code configuration for Vercel AI SDK v5+ with workflows, agents, and latest model support",
   "keywords": [
     "vercel",
     "ai-sdk",
+    "ai-sdk-v5",
     "claude-code",
     "streaming",
     "llm",
     "openai",
     "anthropic",
+    "google",
+    "xai",
+    "grok",
+    "workflows",
+    "agents",
     "ai"
   ],
   "author": "Matt Dionis <matt@nlad.dev>",
@@ -22,10 +28,10 @@
     "node": ">=18.0.0"
   },
   "claude-config": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "compatible": {
       "claude-code": ">=1.0.0",
-      "ai": ">=3.0.0",
+      "ai": ">=5.0.0",
       "typescript": ">=5.0.0"
     },
     "features": {
@@ -36,9 +42,18 @@
         "openai",
         "anthropic",
         "google",
+        "xai",
         "mistral",
         "cohere",
         "huggingface"
+      ],
+      "features": [
+        "workflows",
+        "agents",
+        "streaming-v5",
+        "finish-reason-handling",
+        "enhanced-error-handling",
+        "migration-codemods"
       ]
     }
   },
@@ -49,7 +64,8 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "ai": ">=3.0.0",
+    "ai": ">=5.0.0",
+    "@vercel/workflow": ">=1.0.0",
     "typescript": ">=5.0.0"
   },
   "peerDependenciesMeta": {

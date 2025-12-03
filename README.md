@@ -1,16 +1,14 @@
-# 🚀 Claude Code Configs
+# 🚀 Josh's Claude Code Configs - 2025 Edition
 
-[![NPM Version](https://img.shields.io/npm/v/claude-config-composer)](https://www.npmjs.com/package/claude-config-composer)
-[![NPM Downloads](https://img.shields.io/npm/dm/claude-config-composer)](https://www.npmjs.com/package/claude-config-composer)
-[![GitHub Stars](https://img.shields.io/github/stars/Matt-Dionis/claude-code-configs)](https://github.com/Matt-Dionis/claude-code-configs)
+[![NPM Version](https://img.shields.io/npm/v/josh-claude-config-composer)](https://www.npmjs.com/package/josh-claude-config-composer)
+[![NPM Downloads](https://img.shields.io/npm/dm/josh-claude-config-composer)](https://www.npmjs.com/package/josh-claude-config-composer)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![Tests](https://github.com/Matt-Dionis/claude-code-configs/actions/workflows/ci.yml/badge.svg)](https://github.com/Matt-Dionis/claude-code-configs/actions/workflows/ci.yml)
-[![Node Version](https://img.shields.io/node/v/claude-config-composer)](https://nodejs.org)
+[![Node Version](https://img.shields.io/node/v/josh-claude-config-composer)](https://nodejs.org)
 
-> **Production-ready Claude Code configurations for popular frameworks and tools**
+> **Production-ready Claude Code configurations for the latest 2025 frameworks and tools**
 
-🎉 **Version 1.0.0** - Production-ready with comprehensive testing and 124 passing tests
-📦 **NPM Package** - Install with `npm install -g claude-config-composer` or use `npx`
+🎉 **Version 2.0.0** - Updated for 2025 with Next.js 16, Tailwind v4, shadcn/ui 2025, Drizzle v0.44.6+, and AI SDK v5+
+📦 **NPM Package** - Install with `npm install -g josh-claude-config-composer` or use `npx`
 
 ## 🚨 **Breaking Changes for Existing Users**
 
@@ -46,20 +44,20 @@ Found a bug? Please report it at [GitHub Issues](https://github.com/Matt-Dionis/
 
 ```bash
 # Generate configs directly in your project
-npx claude-config-composer nextjs-15 shadcn
+npx josh-claude-config-composer nextjs-16 shadcn
 
 # Or use interactive mode
-npx claude-config-composer
+npx josh-claude-config-composer
 ```
 
 **Global Installation:**
 
 ```bash
 # Install globally for frequent use
-npm install -g claude-config-composer
+npm install -g josh-claude-config-composer
 
 # Then use from any project
-claude-compose nextjs-15 shadcn tailwindcss
+josh-claude-compose nextjs-16 shadcn tailwindcss
 ```
 
 **Local Development (For Contributors):**
@@ -72,7 +70,7 @@ npm install && npm run build
 
 # Generate configs from your project directory
 cd /path/to/your/project
-node /path/to/claude-code-configs/claude-config-composer/dist/cli.js nextjs-15 shadcn
+node /path/to/claude-code-configs/claude-config-composer/dist/cli.js nextjs-16 shadcn
 ```
 
 **✨ Features:**
@@ -89,28 +87,28 @@ node /path/to/claude-code-configs/claude-config-composer/dist/cli.js nextjs-15 s
 
 ```bash
 # Copy a specific configuration to your project
-cp -r configurations/frameworks/nextjs-15/.claude your-project/
-cp configurations/frameworks/nextjs-15/CLAUDE.md your-project/
+cp -r configurations/frameworks/nextjs-16/.claude your-project/
+cp configurations/frameworks/nextjs-16/CLAUDE.md your-project/
 ```
 
 **Available configurations:**
 
 **Frameworks:**
 
-- `nextjs-15` - Next.js 15 with App Router and React 19
+- `nextjs-16` - Next.js 16 with Turbopack, Cache Components, React 19.2, and React Compiler
 
 **UI & Styling:**
 
-- `shadcn` - shadcn/ui component library with Radix UI
-- `tailwindcss` - Utility-first CSS framework with responsive design
+- `shadcn` - shadcn/ui 2025 with Tailwind v4, React 19, enhanced CLI, and OKLCH colors
+- `tailwindcss` - Tailwind CSS v4.0 with CSS-first configuration, OKLCH colors, and high-performance engine
 
 **Databases:**
 
-- `drizzle` - Type-safe ORM with schema management and migrations
+- `drizzle` - Drizzle ORM v0.44.6+ with identity columns, PostgreSQL 17, and enhanced DDL
 
 **Development Tools:**
 
-- `vercel-ai-sdk` - Streaming AI applications with function calling
+- `vercel-ai-sdk` - Vercel AI SDK v5+ with workflows, agents, enhanced providers, and latest model support
 
 **MCP Servers (Complete Solutions):**
 

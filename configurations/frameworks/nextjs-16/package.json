@@ -1,7 +1,7 @@
 {
-  "name": "nextjs-15-claude-config",
-  "version": "1.0.0",
-  "description": "Comprehensive Claude Code configuration for Next.js 15 development with App Router and React 19",
+  "name": "nextjs-16-claude-config",
+  "version": "2.0.0",
+  "description": "Comprehensive Claude Code configuration for Next.js 16 development with Turbopack, Cache Components, and React 19.2",
   "keywords": [
     "nextjs",
     "next.js",
@@ -9,7 +9,10 @@
     "react",
     "app-router",
     "server-components",
-    "react-19"
+    "react-19",
+    "turbopack",
+    "cache-components",
+    "react-compiler"
   ],
   "author": "Matt Dionis <matt@nlad.dev>",
   "license": "MIT",
@@ -18,15 +21,15 @@
     "url": "https://github.com/Matt-Dionis/claude-code-configs.git"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=20.9.0"
   },
   "claude-config": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "compatible": {
       "claude-code": ">=1.0.0",
-      "nextjs": ">=15.0.0",
-      "react": ">=19.0.0",
-      "typescript": ">=5.0.0"
+      "nextjs": ">=16.0.0",
+      "react": ">=19.2.0",
+      "typescript": ">=5.1.0"
     },
     "features": {
       "agents": 11,
@@ -35,7 +38,10 @@
       "frameworks": [
         "next-app-router",
         "react-server-components",
-        "server-actions"
+        "server-actions",
+        "turbopack",
+        "cache-components",
+        "react-compiler"
       ]
     }
   },
@@ -46,10 +52,10 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "next": ">=15.0.0",
-    "react": ">=19.0.0",
-    "react-dom": ">=19.0.0",
-    "typescript": ">=5.0.0"
+    "next": ">=16.0.0",
+    "react": ">=19.2.0",
+    "react-dom": ">=19.2.0",
+    "typescript": ">=5.1.0"
   },
   "peerDependenciesMeta": {
     "next": {

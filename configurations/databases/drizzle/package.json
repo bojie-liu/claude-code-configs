@@ -1,7 +1,7 @@
 {
-  "name": "drizzle-claude-config",
-  "version": "1.0.0",
-  "description": "Comprehensive Claude Code configuration for Drizzle ORM development",
+  "name": "drizzle-2025-claude-config",
+  "version": "2.0.0",
+  "description": "Comprehensive Claude Code configuration for Drizzle ORM v0.44.6+ with identity columns and PostgreSQL 17 support",
   "keywords": [
     "drizzle",
     "drizzle-orm",
@@ -9,7 +9,10 @@
     "database",
     "typescript",
     "sql",
-    "orm"
+    "orm",
+    "identity-columns",
+    "postgresql-17",
+    "gel-dialect"
   ],
   "author": "Matt Dionis <matt@nlad.dev>",
   "license": "MIT",
@@ -21,10 +24,11 @@
     "node": ">=18.0.0"
   },
   "claude-config": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "compatible": {
       "claude-code": ">=1.0.0",
-      "drizzle-orm": ">=0.40.0",
+      "drizzle-orm": ">=0.44.6",
+      "drizzle-kit": ">=0.31.5",
       "typescript": ">=5.0.0"
     },
     "features": {
@@ -32,12 +36,19 @@
       "commands": 5,
       "hooks": 1,
       "databases": [
-        "postgresql",
+        "postgresql-17",
         "mysql",
         "sqlite",
         "planetscale",
         "neon",
-        "turso"
+        "turso",
+        "gel-dialect"
+      ],
+      "patterns": [
+        "identity-columns",
+        "enhanced-ddl",
+        "version-compatibility",
+        "migration-validation"
       ]
     }
   },
@@ -48,8 +59,8 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "drizzle-orm": ">=0.40.0",
-    "drizzle-kit": ">=0.28.0",
+    "drizzle-orm": ">=0.44.6",
+    "drizzle-kit": ">=0.31.5",
     "typescript": ">=5.0.0"
   },
   "peerDependenciesMeta": {

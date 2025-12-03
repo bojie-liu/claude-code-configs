@@ -1,11 +1,11 @@
 {
-  "name": "claude-config-composer",
-  "version": "1.0.0",
-  "description": "Generate production-ready Claude Code configurations for popular frameworks and tools.",
+  "name": "josh-claude-config-composer",
+  "version": "2.0.0",
+  "description": "Generate production-ready Claude Code configurations for the latest frameworks (Next.js 16, Tailwind v4, shadcn/ui 2025, Drizzle v0.44.6+, AI SDK v5+).",
   "main": "dist/cli.js",
   "bin": {
-    "claude-config-composer": "./dist/cli.js",
-    "claude-compose": "./dist/cli.js"
+    "josh-claude-config-composer": "./dist/cli.js",
+    "josh-claude-compose": "./dist/cli.js"
   },
   "scripts": {
     "dev": "tsx src/cli.ts",
@@ -30,14 +30,17 @@
     "config",
     "cli",
     "developer-tools",
-    "nextjs",
-    "react",
-    "shadcn",
-    "mcp-server",
+    "nextjs-16",
+    "tailwind-v4",
+    "shadcn-ui-2025",
+    "drizzle-orm",
+    "vercel-ai-sdk-v5",
+    "react-19",
     "configuration-generator",
-    "development-stack"
+    "development-stack",
+    "2025-frameworks"
   ],
-  "author": "Matt Dionis <matt@nlad.dev>",
+  "author": "Josh Liu (based on work by Matt Dionis <matt@nlad.dev>)",
   "license": "MIT",
   "homepage": "https://github.com/Matt-Dionis/claude-code-configs#readme",
   "repository": {

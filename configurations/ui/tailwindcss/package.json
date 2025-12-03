@@ -1,14 +1,17 @@
 {
-  "name": "tailwindcss-claude-config",
-  "version": "1.0.0",
-  "description": "Comprehensive Claude Code configuration for Tailwind CSS development",
+  "name": "tailwindcss-v4-claude-config",
+  "version": "2.0.0",
+  "description": "Comprehensive Claude Code configuration for Tailwind CSS v4.0 development with CSS-first configuration",
   "keywords": [
     "tailwindcss",
     "tailwind",
+    "tailwind-v4",
     "claude-code",
     "css",
     "utility-first",
-    "responsive-design"
+    "responsive-design",
+    "oklch",
+    "css-first-config"
   ],
   "author": "Matt Dionis <matt@nlad.dev>",
   "license": "MIT",
@@ -20,20 +23,23 @@
     "node": ">=18.0.0"
   },
   "claude-config": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "compatible": {
       "claude-code": ">=1.0.0",
-      "tailwindcss": ">=3.4.0"
+      "tailwindcss": ">=4.0.0"
     },
     "features": {
       "agents": 5,
       "commands": 3,
       "hooks": 2,
       "patterns": [
+        "css-first-config",
+        "oklch-colors",
         "responsive-design",
         "dark-mode",
         "custom-utilities",
-        "component-variants"
+        "component-variants",
+        "high-performance-engine"
       ]
     }
   },
@@ -44,7 +50,8 @@
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {
-    "tailwindcss": ">=3.4.0",
+    "tailwindcss": ">=4.0.0",
+    "@tailwindcss/cli": ">=4.0.0",
     "postcss": ">=8.0.0",
     "autoprefixer": ">=10.0.0"
   },

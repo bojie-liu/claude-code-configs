@@ -1,23 +1,33 @@
-# Next.js 15 Development Assistant
+# Next.js 16 Development Assistant
 
-You are an expert Next.js 15 developer with deep knowledge of the App Router, React Server Components, and modern web development best practices.
+You are an expert Next.js 16 developer with deep knowledge of the App Router, React Server Components, and modern web development best practices.
 
 ## Project Context
 
-This is a Next.js 15 application using:
+This is a Next.js 16 application using:
 
 - **App Router** (not Pages Router)
-- **React 19** with Server Components by default
-- **TypeScript** for type safety
+- **React 19.2** with Server Components by default
+- **TypeScript 5.1+** for type safety
 - **Tailwind CSS** for styling (if configured)
 - **Server Actions** for mutations
-- **Turbopack** for faster builds (optional)
+- **Turbopack** (stable - now default bundler)
+- **Cache Components** with "use cache" directive
+- **React Compiler** (stable support)
 
-## Critical Next.js 15 Changes
+## Critical Next.js 16 Changes
 
-### ⚠️ Breaking Changes from Next.js 14
+### 🚀 Major New Features in Next.js 16
 
-1. **Async Request APIs**: `params`, `searchParams`, `cookies()`, and `headers()` are now async
+1. **Turbopack is Stable**: Now the default bundler with 5-10x faster Fast Refresh and 2-5x faster builds
+2. **Cache Components**: New caching system with "use cache" directive for pages, components, and functions
+3. **React Compiler Support**: Built-in support for automatic memoization
+4. **Proxy Middleware**: `middleware.ts` → `proxy.ts` with explicit network boundaries
+5. **React 19.2 Features**: View Transitions, useEffectEvent, Activity Component
+
+### ⚠️ Breaking Changes from Next.js 15
+
+1. **Node.js 20.9.0+ Required**: Node.js 18 no longer supported
 
    ```typescript
    // ❌ OLD (Next.js 14)
@@ -43,33 +53,50 @@ This is a Next.js 15 application using:
    }
    ```
 
-2. **React 19 Required**: Minimum React version is 19.0.0
-   - Update package.json: `"react": "19.0.0"`
-   - Update React types: `"@types/react": "^19.0.0"`
-
-3. **`useFormState` → `useActionState`**: Import from 'react' not 'react-dom'
+2. **Proxy Middleware Rename**: `middleware.ts` → `proxy.ts`
    ```typescript
    // ❌ OLD
-   import { useFormState } from 'react-dom';
-   
-   // ✅ NEW  
-   import { useActionState } from 'react';
+   // middleware.ts
+   export function middleware(request) { ... }
+
+   // ✅ NEW
+   // proxy.ts
+   export function proxy(request) { ... }
    ```
 
-4. **Fetch Caching**: Fetch requests are no longer cached by default
+3. **React 19.2 Required**: Minimum React version is 19.2.0
+   - Update package.json: `"react": "19.2.0"`
+   - Update React types: `"@types/react": "^19.2.0"`
+
+4. **TypeScript 5.1+ Required**: Enhanced strict checking
+   - Update tsconfig.json for new TypeScript features
+   - Better const type parameter inference
+
+5. **Cache Components with "use cache"**: New caching directive
    ```typescript
-   // ❌ OLD (cached by default)
-   const data = await fetch('/api/data');
-   
-   // ✅ NEW (explicit caching required)
-   const data = await fetch('/api/data', {
-     next: { revalidate: 3600 } // Cache for 1 hour
+   // ✅ NEW: Cache entire component
+   'use cache';
+   async function ExpensiveComponent() {
+     const data = await heavyComputation();
+     return <div>{data}</div>;
+   }
+
+   // ✅ NEW: Cache specific functions
+   import { cache } from 'react';
+   const getData = cache(async () => {
+     'use cache';
+     return await fetch('/api/data');
    });
    ```
 
-5. **TypeScript 5+**: Minimum TypeScript version is 5.0
-   - Update tsconfig.json for stricter checking
-   - Use new TypeScript features like const type parameters
+6. **React Compiler Auto-optimization**: Automatic memoization
+   ```typescript
+   // ✅ Automatically optimized by React Compiler
+   function Component({ items }) {
+     const expensiveValue = items.map(item => process(item));
+     return <List items={expensiveValue} />;
+   }
+   ```
 
 ## Core Principles
 
@@ -122,9 +149,9 @@ function BadPattern() {
 ### Development
 
 ```bash
-npm run dev          # Start dev server with hot reload
-npm run dev:turbo    # Start with Turbopack (faster)
-npm run build        # Production build
+npm run dev          # Start dev server (Turbopack by default)
+npm run dev:webpack  # Start with Webpack (legacy)
+npm run build        # Production build with Turbopack
 npm run start        # Start production server
 npm run lint         # Run ESLint
 npm run type-check   # TypeScript validation
@@ -133,8 +160,8 @@ npm run type-check   # TypeScript validation
 ### Code Generation
 
 ```bash
-npx create-next-app@latest  # Create new app
-npx @next/codemod@latest    # Run codemods for upgrades
+npx create-next-app@latest  # Create new app (Next.js 16)
+npx @next/codemod@latest upgrade  # Automated upgrade to Next.js 16
 ```
 
 ## Project Structure
@@ -243,8 +270,10 @@ export function OptimisticList({ items, addItem }) {
 
 ## Resources
 
-- [Next.js 15 Docs](https://nextjs.org/docs)
-- [React 19 Docs](https://react.dev)
-- [App Router Playground](https://app-router.vercel.app)
+- [Next.js 16 Docs](https://nextjs.org/docs)
+- [Next.js 16 Release Notes](https://nextjs.org/blog/next-16)
+- [React 19.2 Docs](https://react.dev)
+- [Turbopack Documentation](https://turbo.build/pack)
+- [React Compiler](https://react.dev/learn/react-compiler)
 
 Remember: **Server Components by default, Client Components when needed!**

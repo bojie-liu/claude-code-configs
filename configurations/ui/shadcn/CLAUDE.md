@@ -29,17 +29,28 @@ This is a shadcn/ui project focused on:
 - **Radix UI primitives** for behavior and accessibility
 - **Tailwind CSS** for utility-first styling
 - **TypeScript** for type-safe component APIs
-- **React 18/19** with modern patterns (Server Components when applicable)
+- **React 19.2** with modern patterns (Server Components when applicable)
 - **Accessibility-first** design with full keyboard and screen reader support
+
+## 🚀 2025 shadcn/ui Updates
+
+### Major Enhancements
+- **Tailwind v4 compatibility** with CSS-first configuration
+- **React 19 support** with updated forwardRef patterns
+- **Enhanced CLI** with diff command and improved add functionality
+- **Calendar upgrade** to latest React DayPicker with 30+ blocks
+- **OKLCH color system** replacing HSL for better color consistency
+- **New-york style as default** (replacing deprecated default style)
+- **Sonner integration** (toast component deprecation in favor of sonner)
 
 ## Technology Stack
 
 ### Core Technologies
 
-- **React 18/19** - Component framework
-- **TypeScript** - Type-safe development
-- **Tailwind CSS v3.4+** - Utility-first styling
-- **Radix UI** - Unstyled, accessible primitives
+- **React 19.2** - Component framework with enhanced performance
+- **TypeScript 5.1+** - Type-safe development
+- **Tailwind CSS v4.0** - CSS-first configuration, OKLCH colors
+- **Radix UI** - Unstyled, accessible primitives with data-slot attributes
 - **Class Variance Authority (CVA)** - Component variants
 - **tailwind-merge** - Intelligent class merging
 - **clsx** - Conditional classes
@@ -47,13 +58,15 @@ This is a shadcn/ui project focused on:
 
 ### Framework Support
 
-- **Next.js 13-15** (App Router preferred)
+- **Next.js 16** (App Router with Turbopack)
+- **Next.js 15.3** with Tailwind v4 upgraded components
 - **Vite** with React
 - **Remix** with React Router
 - **Astro** with React integration
 - **Laravel** with Inertia.js
 - **TanStack Router/Start**
 - **React Router**
+- **Nuxt v4** (for shadcn-vue variant)
 
 ## Critical shadcn/ui Principles
 
@@ -69,7 +82,7 @@ This is a shadcn/ui project focused on:
 Every component follows this structure:
 
 ```tsx
-// Root component with forwardRef
+// React 19 updated component pattern with data-slot attributes
 const Component = React.forwardRef<HTMLElement, ComponentProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "div"
@@ -77,6 +90,7 @@ const Component = React.forwardRef<HTMLElement, ComponentProps>(
       <Comp
         ref={ref}
         className={cn(componentVariants({ variant, size, className }))}
+        data-slot="component" // New in Tailwind v4 for styling
         {...props}
       />
     )
@@ -84,10 +98,28 @@ const Component = React.forwardRef<HTMLElement, ComponentProps>(
 )
 Component.displayName = "Component"
 
-// Sub-components for composition
-const ComponentTrigger = React.forwardRef<...>()
-const ComponentContent = React.forwardRef<...>()
-const ComponentItem = React.forwardRef<...>()
+// Sub-components with data-slot attributes for Tailwind v4
+const ComponentTrigger = React.forwardRef<...>(
+  ({ className, ...props }, ref) => (
+    <Trigger
+      ref={ref}
+      className={cn("...", className)}
+      data-slot="trigger"
+      {...props}
+    />
+  )
+)
+
+const ComponentContent = React.forwardRef<...>(
+  ({ className, ...props }, ref) => (
+    <Content
+      ref={ref}
+      className={cn("...", className)}
+      data-slot="content"
+      {...props}
+    />
+  )
+)
 
 // Export all parts
 export { Component, ComponentTrigger, ComponentContent, ComponentItem }
@@ -96,9 +128,23 @@ export { Component, ComponentTrigger, ComponentContent, ComponentItem }
 ### 3. Installation Patterns
 
 ```bash
-# CLI installation (recommended)
+# CLI installation (recommended) - 2025 enhanced CLI
 npx shadcn@latest init
+
+# Initialize with Tailwind v4 support
+npx shadcn@latest init --tailwind-v4
+
+# Add components (enhanced add command)
 npx shadcn@latest add [component]
+
+# Add multiple components with dependencies auto-resolved
+npx shadcn@latest add button card form dialog
+
+# New diff command to track upstream changes
+npx shadcn@latest diff
+
+# Check what has changed upstream
+npx shadcn@latest diff button
 
 # Manual installation
 # 1. Install dependencies
@@ -218,37 +264,67 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 ## Theming System
 
-### CSS Variables Structure
+### OKLCH CSS Variables Structure (2025 Update)
 
 ```css
+/* Tailwind v4 compatible theme with OKLCH colors */
+@import "tailwindcss";
+
+@theme {
+  /* OKLCH Color System - Better color consistency */
+  --color-background: oklch(100% 0 0);
+  --color-foreground: oklch(9% 0 0);
+  --color-card: oklch(100% 0 0);
+  --color-card-foreground: oklch(9% 0 0);
+  --color-popover: oklch(100% 0 0);
+  --color-popover-foreground: oklch(9% 0 0);
+  --color-primary: oklch(9% 0 0);
+  --color-primary-foreground: oklch(98% 0 0);
+  --color-secondary: oklch(96% 0 0);
+  --color-secondary-foreground: oklch(9% 0 0);
+  --color-muted: oklch(96% 0 0);
+  --color-muted-foreground: oklch(46% 0 0);
+  --color-accent: oklch(96% 0 0);
+  --color-accent-foreground: oklch(9% 0 0);
+  --color-destructive: oklch(62% 0.25 29);
+  --color-destructive-foreground: oklch(98% 0 0);
+  --color-border: oklch(91% 0 0);
+  --color-input: oklch(91% 0 0);
+  --color-ring: oklch(9% 0 0);
+  --radius: 0.5rem;
+
+  /* Dark mode with OKLCH */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background: oklch(9% 0 0);
+      --color-foreground: oklch(98% 0 0);
+      --color-card: oklch(9% 0 0);
+      --color-card-foreground: oklch(98% 0 0);
+      --color-popover: oklch(9% 0 0);
+      --color-popover-foreground: oklch(98% 0 0);
+      --color-primary: oklch(98% 0 0);
+      --color-primary-foreground: oklch(9% 0 0);
+      --color-secondary: oklch(15% 0 0);
+      --color-secondary-foreground: oklch(98% 0 0);
+      --color-muted: oklch(15% 0 0);
+      --color-muted-foreground: oklch(64% 0 0);
+      --color-accent: oklch(15% 0 0);
+      --color-accent-foreground: oklch(98% 0 0);
+      --color-destructive: oklch(69% 0.22 29);
+      --color-destructive-foreground: oklch(98% 0 0);
+      --color-border: oklch(15% 0 0);
+      --color-input: oklch(15% 0 0);
+      --color-ring: oklch(98% 0 0);
+    }
+  }
+}
+
+/* Legacy HSL support for gradual migration */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    /* ... dark theme variables ... */
+    --background: oklch(var(--color-background));
+    --foreground: oklch(var(--color-foreground));
+    /* Map OKLCH to HSL variables for backwards compatibility */
   }
 }
 ```
@@ -366,17 +442,29 @@ const table = useReactTable({
 ### Development
 
 ```bash
-# Initialize shadcn/ui
+# Initialize shadcn/ui (2025 enhanced)
 npx shadcn@latest init
 
-# Add components
+# Initialize with Tailwind v4 support
+npx shadcn@latest init --tailwind-v4
+
+# Add components with auto-dependency resolution
 npx shadcn@latest add button card dialog form
 
 # Add all components
 npx shadcn@latest add --all
 
-# Update components
+# Update components (enhanced in 2025)
 npx shadcn@latest add button --overwrite
+
+# New: Track upstream changes
+npx shadcn@latest diff
+
+# New: Compare specific component
+npx shadcn@latest diff button
+
+# New: View what changed in registry
+npx shadcn@latest diff --component=card
 
 # Build custom registry
 npx shadcn@latest build
